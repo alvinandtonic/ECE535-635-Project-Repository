@@ -1,6 +1,6 @@
 ># ECE535-635-Project-Repository
 >Project on Federated Learning on Multimodal Sensor Data by Byung Woong Ko (Alvin) and Liu Ligeng (Leo)
-<br />
+</br>
 >**Motivation:**
 >
 >The demand for multimodal FL in research community is increasing due to recent emergence of variety of heterogenous sensor deployments with multiple sensing modalities that serve a single learning application. 
@@ -39,8 +39,8 @@
 >
 >Multimodal Federated Learning on IOT Data (https://pure-research.york.ac.uk/ws/portalfiles/portal/
 79047763/2109.04833v2.pdf)
-<br />
-<br />
+</br>
+</br>
 >**-Roles-**
 >
 >Setup:             Byung Woong Ko
