@@ -39,11 +39,11 @@
 >
 >  Multimodal Federated Learning on IOT Data (https://pure-research.york.ac.uk/ws/portalfiles/portal/
 79047763/2109.04833v2.pdf)
->
->
+> 
+> 
 
->
->
+> 
+> 
 >**-Roles-**
 >
 >Setup:             Byung Woong Ko
