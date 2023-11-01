@@ -46,14 +46,14 @@
 
 >**-Roles-**
 >
->Setup:             Byung Woong Ko
+>Setup:             Ligeng Liu
 >
->Software:          Byung Woong Ko
+>Software:          Byung Woong Ko & Ligeng Liu
 >
->Networking:        Undecided
+>Networking:        Byung Woong Ko & Ligeng Liu
 >
->Writing:           Undecided
+>Writing:           Byung Woong Ko
 >
->Research:          Byung Woong Ko
+>Research:          Byung Woong Ko & Ligeng Liu
 >
->Algorithm design:  Undecided
+>Algorithm design:  Byung Woong Ko & Ligeng Liu
