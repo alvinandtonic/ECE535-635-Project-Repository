@@ -78,16 +78,25 @@ class FL:
             train_loss, train_accuracy = server.update(local_models)
 
             # Cloud evaluation
-            if t % self.eval_interval != 0:
-                continue
-            else:
-                with torch.no_grad():
-                    test_loss, test_accuracy, test_f1 = server.eval(
-                        server_test)
-                result_table[row] = np.array(
-                    (t+1, local_ae_loss, train_loss, train_accuracy, test_loss, test_accuracy, test_f1))
-                row += 1
-                self.write_result(result_table)
+            if t % self.eval_interval == 0:
+              with torch.no_grad():
+                test_loss, test_accuracy, test_f1, test_per_class_accuracy = server.eval(data_test)
+              result_table[row] = np.array((t+1, local_ae_loss, train_loss, train_accuracy, test_loss, test_accuracy, test_f1))
+              row += 1
+              self.write_result(result_table)  
+              self.write_class_accuracy(test_per_class_accuracy,t+1)  
+              
+    def write_class_accuracy(self, class_accuracy, round_number):
+        class_accuracy_path = self.results_path
+        if self.is_mpi:
+            class_accuracy_path = os.path.join(class_accuracy_path, f"rep_{self.rank}")
+        Path(class_accuracy_path).mkdir(parents=True, exist_ok=True)
+        file_path = os.path.join(class_accuracy_path, "class_accuracy.txt")
+        with open(file_path, 'a') as file: 
+            file.write(f"Round {round_number}:\n")
+            for class_id, accuracy in class_accuracy.items():
+                file.write(f"|{class_id}: {accuracy}")
+            file.write("\n") 
 
     def write_result(self, result_table):
         """ Writes simulation results into a result.txt file

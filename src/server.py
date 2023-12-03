@@ -6,6 +6,7 @@ from models import SplitLSTMAutoEncoder, DCCLSTMAutoEncoder, MLP
 from torch import nn, optim
 from utils import make_seq_batch
 from sklearn.metrics import f1_score
+from collections import defaultdict
 
 EVAL_WIN = 2000
 
@@ -235,6 +236,9 @@ class Server:
         win_f1 = []
         n_samples = x_samples.shape[1]
         n_eval_process = n_samples // EVAL_WIN + 1
+        
+        correct_predictions_perclass=defaultdict(int)
+        total_predictions_perclass=defaultdict(int)
 
         for i in range(n_eval_process):
             idx_start = i * EVAL_WIN
@@ -251,8 +255,15 @@ class Server:
             top_p, top_class = output.topk(1, dim=1)
             equals = top_class == targets.view(*top_class.shape).long()
             accuracy = torch.mean(equals.type(torch.FloatTensor))
+            
             np_gt = y.flatten()
             np_pred = top_class.squeeze().cpu().detach().numpy()
+            
+            for gt,pred in zip(np_gt, np_pred):
+                  total_predictions_perclass[gt]+=1
+                  if gt == pred :
+                      correct_predictions_perclass[gt]+=1
+            
             weighted_f1 = f1_score(np_gt, np_pred, average="weighted")
 
             win_loss.append(loss.item())
@@ -261,5 +272,9 @@ class Server:
 
             if torch.cuda.is_available():
                 torch.cuda.empty_cache()
-
-        return np.mean(win_loss), np.mean(win_accuracy), np.mean(win_f1)
+            
+            per_class_accuracy={
+            class_id:correct_predictions_perclass[class_id]/total_predictions_perclass[class_id]
+            for class_id in total_predictions_perclass
+}
+        return np.mean(win_loss), np.mean(win_accuracy), np.mean(win_f1),per_class_accuracy
