@@ -35,12 +35,16 @@
 
 >**Project timeline**
 >
->TBD
+>Week1~3 = Reproduce results described in paper
+>Week4~6 = Implement per-class accuracy
+>Week7~9 = Analyze the results
+>Rest    = Report
 
 >**References**
 >
->Multimodal Federated Learning on IOT Data (https://pure-research.york.ac.uk/ws/portalfiles/portal/
-79047763/2109.04833v2.pdf)
+>Multimodal Federated Learning on IOT Data (https://pure-research.york.ac.uk/ws/portalfiles/portal/79047763/2109.04833v2.pdf)
+>Federated Learning on Multimodal Data: A Comprehensive Survey (https://link.springer.com/article/10.1007/s11633-022-1398-0)
+>
 
 ></br>
 
@@ -50,7 +54,7 @@
 >
 >Software:          Byung Woong Ko & Ligeng Liu
 >
->Networking:        Byung Woong Ko & Ligeng Liu
+>Analysis:        Byung Woong Ko & Ligeng Liu
 >
 >Writing:           Byung Woong Ko
 >
