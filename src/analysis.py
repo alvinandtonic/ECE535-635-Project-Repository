@@ -145,7 +145,7 @@ modality_print = {
     "rgb": "RGB",
     "depth": "Depth",
 }
-N_REPS = 64
+N_REPS = 4
 
 CB_color_cycle = ['#ff7f00', '#377eb8',
                   '#f781bf', '#a65628', '#984ea3',
