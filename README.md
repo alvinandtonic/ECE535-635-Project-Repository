@@ -21,9 +21,9 @@
 >
 >Evaluate the system on a multimodal dataset that is relatively balanced in class distribution
 
->**System blocks:**
+>**Note:**
 >
->To be created and uploaded via link upon completion.
+> Plots made to reproduce the results and their respective file is in the folder plots (results in zip)
 
 >**HW/SW requirements:**
 >
