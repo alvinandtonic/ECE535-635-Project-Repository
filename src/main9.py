@@ -23,7 +23,7 @@ def main():
 
 def read_config():
   config = configparser.ConfigParser()
-  config.read('config/opp/ablation/A30_B30_AB0_label_A_test_B')
+  config.read('config/opp/dccae/A10_B0_AB30_label_A_test_B')
   return config
 config = read_config()
 fl = FL(config)
