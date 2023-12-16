@@ -36,8 +36,11 @@
 >**Project timeline**
 >
 >Week1~3 = Reproduce results described in paper
+>
 >Week4~6 = Implement per-class accuracy
+>
 >Week7~9 = Analyze the results
+>
 >Rest    = Report
 
 >**References**
