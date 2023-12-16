@@ -239,7 +239,8 @@ class Server:
         
         correct_predictions_perclass=defaultdict(int)
         total_predictions_perclass=defaultdict(int)
-
+        total_sample_perclass=defaultdict(int)
+        
         for i in range(n_eval_process):
             idx_start = i * EVAL_WIN
             idx_end = np.min((n_samples, idx_start+EVAL_WIN))
@@ -277,4 +278,4 @@ class Server:
             class_id:correct_predictions_perclass[class_id]/total_predictions_perclass[class_id]
             for class_id in total_predictions_perclass
 }
-        return np.mean(win_loss), np.mean(win_accuracy), np.mean(win_f1),per_class_accuracy
+        return np.mean(win_loss), np.mean(win_accuracy), np.mean(win_f1),per_class_accuracy,total_predictions_perclass

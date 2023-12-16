@@ -3,6 +3,9 @@ import copy
 import torch
 import math
 import numpy as np
+import pandas as pd
+from pathlib import Path
+import matplotlib.pyplot as plt
 
 from server import Server
 from client import Client
@@ -80,24 +83,58 @@ class FL:
             # Cloud evaluation
             if t % self.eval_interval == 0:
               with torch.no_grad():
-                test_loss, test_accuracy, test_f1, test_per_class_accuracy = server.eval(data_test)
+                test_loss, test_accuracy, test_f1, test_per_class_accuracy,total_predictions_perclass = server.eval(data_test)
               result_table[row] = np.array((t+1, local_ae_loss, train_loss, train_accuracy, test_loss, test_accuracy, test_f1))
               row += 1
               self.write_result(result_table)  
-              self.write_class_accuracy(test_per_class_accuracy,t+1)  
+              self.write_class_accuracy(test_per_class_accuracy,t+1) 
+              self. write_class_samplenum(total_predictions_perclass,t+1)
               
+              
+    def write_class_samplenum(self,total_predictions_perclass,round_number):
+        image_dir_path=self.results_path
+        
+        if self.is_mpi:
+            image_dir_path=os.path.join(image_dir_path,f"rep_{self.rank}")
+        Path(image_dir_path).mkdir(parents=True,exist_ok=True)
+        
+        image_file_path = os.path.join(image_dir_path, f"class_num.png")
+        
+        categories = list(total_predictions_perclass.keys())
+        
+        if not os.path.exists(image_file_path):
+            categories = list(total_predictions_perclass.keys())
+            values = [total_predictions_perclass[cat] for cat in categories]
+            plt.figure(figsize=(10, 6))
+            plt.bar(categories, values, color='blue')
+            plt.title('total number for per class')
+            plt.xlabel('class')
+            plt.ylabel('number')
+            plt.savefig(image_file_path)  
+            plt.close()
+    
     def write_class_accuracy(self, class_accuracy, round_number):
         class_accuracy_path = self.results_path
+        
         if self.is_mpi:
             class_accuracy_path = os.path.join(class_accuracy_path, f"rep_{self.rank}")
         Path(class_accuracy_path).mkdir(parents=True, exist_ok=True)
-        file_path = os.path.join(class_accuracy_path, "class_accuracy.txt")
-        with open(file_path, 'a') as file: 
-            file.write(f"Round {round_number}:\n")
-            for class_id, accuracy in class_accuracy.items():
-                file.write(f"|{class_id}: {accuracy}")
-            file.write("\n") 
+        excel_file_path = os.path.join(class_accuracy_path, "class_accuracy.xlsx")
+        
+        if round_number == 1 and os.path.exists(excel_file_path):
+            os.remove(excel_file_path)
+        if Path(excel_file_path).is_file():
+            
+            df = pd.read_excel(excel_file_path)
+        else:
+            df = pd.DataFrame(columns=['Round'] + list(class_accuracy.keys()))
+        new_row={'Round': round_number}
+        new_row.update(class_accuracy)
+        new_row_df = pd.DataFrame([new_row]) 
+        df = pd.concat([df, new_row_df], ignore_index=True)
+        df.to_excel(excel_file_path, index=False)
 
+        
     def write_result(self, result_table):
         """ Writes simulation results into a result.txt file
 
